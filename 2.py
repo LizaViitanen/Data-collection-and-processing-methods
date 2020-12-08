@@ -1,7 +1,5 @@
 #https://api.windy.com/api/webcams/v2/[path]
-#ключ авторизации API из первого шага может находиться в:
-#заголовок запроса "x-windy-key": "your_API_key",
-#или получить параметр ?key=your_API_key
+#ключ авторизации API 
 # nk8ZS1BmmsOHHMQBrAWn9wyKS5rrL1iA
 
 import requests
