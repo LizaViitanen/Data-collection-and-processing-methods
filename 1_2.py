@@ -19,10 +19,10 @@ responce = requests.get(link, params=params, headers=headers)
 soup = bs(responce.text, 'html.parser')
 
 if responce.ok:
-#page = soup.find('a', {'class': 'bloko-button HH-Pager-Controls-Next HH-Pager-Control'})
-#redir_page = main_link+page['href']
-#n = page.text
-#for i in n:
+    page = soup.find('a', {'class': 'bloko-button HH-Pager-Controls-Next HH-Pager-Control'})
+    redir_page = main_link+page['href']
+
+while True:
     vacancy_list = soup.findAll('div',{'class':'vacancy-serp-item HH-VacancySidebarTrigger-Vacancy'})
     positions = []
     for position in vacancy_list:
@@ -40,7 +40,7 @@ if responce.ok:
                 vacancy_salary_generaly = vacancy_salary_generaly + i
 #1 зп неуказана
         if vacancy_salary_generaly =='':
-            vacancy_salary_generaly = 'Не указано'
+            vacancy_salary_generaly = None
 #2 зп указана в диапозоне или от\до
         else:
             if "от" in vacancy_salary_gen:
@@ -49,15 +49,17 @@ if responce.ok:
                 vacancy_salary_generaly = 'max:'+vacancy_salary_generaly+' '+vacancy_salary_cut[2]
             else:
                 vacancy_salary = vacancy_salary_generaly.split('-')
-                vacancy_salary_generaly = 'min:'+vacancy_salary[0]+' '+vacancy_salary_cut[1]+', max:'+vacancy_salary[1]+' '+vacancy_salary_cut[1]
+                min = vacancy_salary[0]
+                max = vacancy_salary[1]
+                vacancy_salary_generaly = 'min:'+min+' '+vacancy_salary_cut[1]+', max:'+max+' '+vacancy_salary_cut[1]
 
         vacancy_data['link'] = vacancy_link
         vacancy_data['salary'] = vacancy_salary_generaly
         vacancy_data['name'] = vacancy_name.text
 
         positions.append(vacancy_data)
-#responce = requests.get(redir_page, headers=headers)
-
-pprint(positions)
-with open("vacancy.json", 'w', encoding="utf-8") as file:
-    json.dump(positions[0], file, ensure_ascii=False)
+        responce = requests.get(redir_page, headers=headers)
+        pprint(positions)
+        continue
+    else:
+        break
