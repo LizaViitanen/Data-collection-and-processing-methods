@@ -15,7 +15,7 @@ driver.get('https://www.mvideo.ru')
 hits = driver.find_element_by_xpath('//div[contains(text(), "Хиты продаж")]/ancestor::div[@class="section"]')
 all_goods = []
 while True:
-    goods = hits.find_elements_by_class_name('fl-product-tile c-product-tile fl-product-tile_gallery-product-set')
+    goods = hits.find_elements_by_xpath('//a[@class="fl-product-tile c-product-tile fl-product-tile_gallery-product-set"]')
     for good in goods:
         name = good.find_elements_by_css_selector('//h4').title
 
